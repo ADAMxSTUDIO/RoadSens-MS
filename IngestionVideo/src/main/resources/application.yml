@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: RoadSens-IngestionVideo
+  datasource:
+    url: jdbc:mysql://localhost:3306/rsdb?createDatabaseIfNotExist=true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    jpa:
+      database-platform: org.hibernate.dialect.MySQL8Dialect
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
+
+  server:
+    port: 8080
+
+server:
+  port: 8080
+
+logging:
+  level:
+    ma.emsi.roadsensingestionvideo: DEBUG
