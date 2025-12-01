@@ -1,6 +1,5 @@
-package ma.emsi.roadsensingestionvideo.entity;
+package ma.emsi.ingestionvideo.entity;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,8 +28,8 @@ public class Video {
     private String orientation;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User reporterId;
+    @JoinColumn(name = "reporter_id")
+    private Reporter reporterId;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

@@ -1,8 +1,8 @@
 spring:
   application:
-    name: RoadSens-IngestionVideo
+    name: SERVICE-INGESTIONVIDEO
   datasource:
-    url: jdbc:mysql://localhost:3306/rsdb?createDatabaseIfNotExist=true
+    url: jdbc:mysql://db-ingestion:3306/rs-ingestion?createDatabaseIfNotExist=true
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: root
@@ -16,8 +16,13 @@ spring:
           format_sql: true
 
 server:
-  port: 8080
+  port: 8082
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8080/eureka/
 
 logging:
   level:
-    ma.emsi.roadsensingestionvideo: DEBUG
+    ma.emsi.ingestionvideo: DEBUG

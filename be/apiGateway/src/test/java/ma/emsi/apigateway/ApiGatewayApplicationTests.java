@@ -1,10 +1,10 @@
-package ma.emsi.ingestionvideo;
+package ma.emsi.apigateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RoadSensIngestionVideoApplicationTests {
+class ApiGatewayApplicationTests {
 
     @Test
     void contextLoads() {

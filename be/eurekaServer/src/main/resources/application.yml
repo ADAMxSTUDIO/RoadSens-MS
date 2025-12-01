@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: SERVICE-EUREKA
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false

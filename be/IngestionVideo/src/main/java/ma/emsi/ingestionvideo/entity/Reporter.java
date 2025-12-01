@@ -1,4 +1,4 @@
-package ma.emsi.roadsensingestionvideo.entity;
+package ma.emsi.ingestionvideo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

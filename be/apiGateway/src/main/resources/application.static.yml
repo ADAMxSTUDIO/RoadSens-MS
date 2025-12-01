@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: SERVICE-GATEWAY
+  cloud:
+    discovery:
+      enabled: true
+    gateway:
+      routes:
+        -id: r1
+        uri: "http://localhost:8082"
+        predicates:
+          - Path=/service-ingestionvideo/**
+
+eureka:
+  instance:
+    hostname: localhost
+
+server:
+  port: 8081

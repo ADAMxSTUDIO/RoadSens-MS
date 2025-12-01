@@ -1,0 +1,83 @@
+services:
+  service-eureka:
+    container_name: eureka-server
+    build:
+      context: ./eurekaServer
+    env_file:
+      - .env
+    networks:
+      - rs-net
+    ports:
+      - "${EUREKA_SERVER_PORT}:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: ./apiGateway
+    env_file:
+      - .env
+    networks:
+      - rs-net
+    depends_on:
+      - service-eureka
+    ports:
+      - "${GATEWAY_PORT}:8081"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  db-ingestion:
+    container_name: db-ingestion
+    image: mysql:8.0
+    networks:
+      - rs-net
+    env_file:
+      - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PWD}
+      - MYSQL_DATABASE=${DB_NAME}
+    ports:
+      - "${DB_PORT}:3306"
+    volumes:
+      - mysql-vol:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 20s
+      retries: 10
+    restart: always
+
+  service-ingestion:
+    container_name: service-ingestion
+    build:
+      context: ./ingestionVideo
+    networks:
+      - rs-net
+    env_file:
+      - .env
+    depends_on:
+      - service-eureka
+      - db-ingestion
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8082/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+volumes:
+  mysql-vol:
+
+networks:
+  rs-net:
+    name: rs-net
+    driver: bridge
