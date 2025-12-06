@@ -2,7 +2,7 @@ spring:
   application:
     name: SERVICE-INGESTIONVIDEO
   datasource:
-    url: jdbc:mysql://db-ingestion:3306/rs-ingestion?createDatabaseIfNotExist=true
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?createDatabaseIfNotExist=true
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
     password: root

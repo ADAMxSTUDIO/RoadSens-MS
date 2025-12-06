@@ -6,7 +6,15 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true      # dynamic routes from Eureka
+          enabled: true              # dynamic routes from Eureka
+          lower-case-service-id: true
+      routes:
+        - id: ingestion
+          uri: lb://SERVICE-INGESTIONVIDEO
+          predicates:
+            - Path=/ingestion/**
+          filters:
+            - StripPrefix=1
 
 server:
   port: 8081

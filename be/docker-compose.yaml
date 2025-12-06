@@ -7,10 +7,11 @@ services:
       - .env
     networks:
       - rs-net
+    # Host:Container (container listens on EUREKA_SERVER_PORT)
     ports:
-      - "${EUREKA_SERVER_PORT}:8080"
+      - "${EUREKA_SERVER_PORT}:${EUREKA_SERVER_PORT}"
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8080/actuator/health"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:${EUREKA_SERVER_PORT}/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -25,11 +26,13 @@ services:
     networks:
       - rs-net
     depends_on:
-      - service-eureka
+      service-eureka:
+        condition: service_healthy   # Wait for Eureka healthcheck
+    # Expose gateway on host 80, container listens on GATEWAY_PORT
     ports:
-      - "${GATEWAY_PORT}:8081"
+      - "80:${GATEWAY_PORT}"
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8080/actuator/health"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:${GATEWAY_PORT}/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -45,8 +48,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_PWD}
       - MYSQL_DATABASE=${DB_NAME}
-    ports:
-      - "${DB_PORT}:3306"
+    # No ports: means DB is internal-only (headless)
     volumes:
       - mysql-vol:/var/lib/mysql
     healthcheck:
@@ -65,10 +67,12 @@ services:
     env_file:
       - .env
     depends_on:
-      - service-eureka
-      - db-ingestion
+      service-eureka:
+        condition: service_healthy
+      db-ingestion:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8082/actuator/health"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:${INGESTION_PORT}/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 5

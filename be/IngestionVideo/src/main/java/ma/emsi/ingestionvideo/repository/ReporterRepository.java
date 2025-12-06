@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReporterRepository extends JpaRepository<Reporter, Long> {
 
+    boolean existsByPhone(String phone);
 }
