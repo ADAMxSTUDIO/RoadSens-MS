@@ -7,7 +7,6 @@ services:
       - .env
     networks:
       - rs-net
-    # Host:Container (container listens on EUREKA_SERVER_PORT)
     ports:
       - "${EUREKA_SERVER_PORT}:${EUREKA_SERVER_PORT}"
     healthcheck:
@@ -28,7 +27,6 @@ services:
     depends_on:
       service-eureka:
         condition: service_healthy   # Wait for Eureka healthcheck
-    # Expose gateway on host 80, container listens on GATEWAY_PORT
     ports:
       - "80:${GATEWAY_PORT}"
     healthcheck:

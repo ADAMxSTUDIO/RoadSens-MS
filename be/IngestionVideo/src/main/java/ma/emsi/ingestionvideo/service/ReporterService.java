@@ -1,10 +1,10 @@
 package ma.emsi.ingestionvideo.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import ma.emsi.ingestionvideo.dto.CreateReporterRequest;
 import ma.emsi.ingestionvideo.dto.ReporterResponse;
 import ma.emsi.ingestionvideo.entity.Reporter;
+import ma.emsi.ingestionvideo.exception.DuplicateResourceException;
 import ma.emsi.ingestionvideo.repository.ReporterRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +16,12 @@ public class ReporterService {
 
     public ReporterResponse createReporter(CreateReporterRequest request) {
 
-        // Check wether the reporter already exists having an existing phone number
+        // Check whether the reporter already exists having an existing phone number
         if (repository.existsByPhone(request.getPhone())) {
-            throw new RuntimeException(String.format("Phone number already exists: %s", request.getPhone()));
+            throw new DuplicateResourceException(String.format("The reporter with same phone: %s alredy exists", request.getPhone()));
         }
 
-        // Create new reporter
+        // Create a new reporter
         Reporter reporter = Reporter.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())

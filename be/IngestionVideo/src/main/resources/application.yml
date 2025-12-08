@@ -3,17 +3,17 @@ spring:
     name: SERVICE-INGESTIONVIDEO
   datasource:
     url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?createDatabaseIfNotExist=true
-    driverClassName: com.mysql.cj.jdbc.Driver
     username: root
-    password: root
-    jpa:
-      database-platform: org.hibernate.dialect.MySQL8Dialect
+    password: ${DB_PWD}
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
       hibernate:
-        ddl-auto: update
-      show-sql: true
-      properties:
-        hibernate:
-          format_sql: true
+        format_sql: true
 
 server:
   port: 8082

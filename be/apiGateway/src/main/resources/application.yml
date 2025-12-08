@@ -15,7 +15,7 @@ spring:
             - Path=/ingestion/**
           filters:
             - StripPrefix=1
-
+            
 server:
   port: 8081
 
