@@ -24,11 +24,11 @@ services:
       - .env
     networks:
       - rs-net
+    ports:
+      - "${GATEWAY_PORT}:${GATEWAY_PORT}"
     depends_on:
       service-eureka:
         condition: service_healthy   # Wait for Eureka healthcheck
-    ports:
-      - "80:${GATEWAY_PORT}"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:${GATEWAY_PORT}/actuator/health"]
       interval: 10s
@@ -74,6 +74,14 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: always
+
+  fe:
+    container_name: fe
+    build:
+      context: ../fe        # path to your Angular project with Dockerfile
+    ports:
+      - "${END_USER_PORT}:80"          # host:container (Nginx serves on 80 inside)
     restart: always
 
 volumes:

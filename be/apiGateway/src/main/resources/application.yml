@@ -1,13 +1,13 @@
 spring:
   application:
     name: API-GATEWAY
-
   cloud:
     gateway:
       discovery:
         locator:
-          enabled: true              # dynamic routes from Eureka
+          enabled: true
           lower-case-service-id: true
+
       routes:
         - id: ingestion
           uri: lb://SERVICE-INGESTIONVIDEO
@@ -15,7 +15,24 @@ spring:
             - Path=/ingestion/**
           filters:
             - StripPrefix=1
-            
+
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - PATCH
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
 server:
   port: 8081
 

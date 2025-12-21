@@ -1,59 +1,56 @@
-# Fe
+# File Structure (focused on auth only)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.10.
-
-## Development server
-
-To start a local development server, run:
-
-```bash
-ng serve
 ```
+src/
+  app/
+    app.config.ts
+    app.routes.ts
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+    core/                         # Cross-cutting, app-wide singletons
+      http/
+        api-client.ts             # Optional wrapper around HttpClient
+      interceptors/
+        auth-interceptor.ts       # Adds Authorization: Bearer <token> [web:427]
+        error-interceptor.ts      # Maps 401/403 -> logout, toast, redirect [web:427]
+      guards/
+        auth-guard.ts             # Protect routes
+      config/
+        environment.tokens.ts     # Injection tokens, config, base URL
+      layout/
+        shell/
+          shell.component.ts      # Navbar/sidebar layout
+      utils/
+        storage.ts                # localStorage/sessionStorage helpers
 
-## Code scaffolding
+    shared/                       # Dumb reusable UI + pipes/directives
+      ui/
+        button/
+        input/
+      pipes/
+      directives/
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+    features/
+      auth/
+        pages/                    # Routed components only
+          login/
+            login.page.ts
+            login.page.html
+          register/
+            register.page.ts
+            register.page.html
+        data-access/              # API calls + token storage
+          auth-api.ts             # calls /auth/login, /auth/register
+          auth-store.ts           # signal/store for auth state (optional)
+          token.service.ts        # get/set/clear token
+        models/
+          auth-request.ts
+          auth-response.ts
+          reporter.ts
+        auth.routes.ts            # routes for auth pages [web:423]
 
-```bash
-ng generate component component-name
+      ingestion/                  # Example feature consuming secured endpoints
+        pages/
+        data-access/
+        models/
+        ingestion.routes.ts
 ```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

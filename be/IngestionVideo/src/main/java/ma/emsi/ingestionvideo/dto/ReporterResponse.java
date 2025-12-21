@@ -10,6 +10,7 @@ public class ReporterResponse {
     private String firstName;
     private String lastName;
     private String phone;
+    private String email;
 
     public static ReporterResponse fromEntity(Reporter reporter){
         ReporterResponse response = new ReporterResponse();
@@ -17,6 +18,7 @@ public class ReporterResponse {
         response.setFirstName(reporter.getFirstName());
         response.setLastName(reporter.getLastName());
         response.setPhone(reporter.getPhone());
+        response.setEmail(reporter.getEmail());
         return response;
     }
 }

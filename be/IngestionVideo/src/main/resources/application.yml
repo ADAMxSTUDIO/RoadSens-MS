@@ -15,6 +15,11 @@ spring:
       hibernate:
         format_sql: true
 
+security:
+  jwt:
+    secret: ${HMAC_SECRET}
+    expiration-ms: 3600000 # 1 hour
+
 server:
   port: 8082
 
