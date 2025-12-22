@@ -20,7 +20,6 @@ FROM nginx:alpine
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy built Angular files
-# If your output folder is different, adjust `fe` accordingly
 COPY --from=build /app/dist/fe/browser /usr/share/nginx/html
 
 EXPOSE 80

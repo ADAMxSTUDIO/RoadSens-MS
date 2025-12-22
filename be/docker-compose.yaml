@@ -48,7 +48,7 @@ services:
       - MYSQL_DATABASE=${DB_NAME}
     # No ports: means DB is internal-only (headless)
     volumes:
-      - mysql-vol:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -84,8 +84,52 @@ services:
       - "${END_USER_PORT}:80"          # host:container (Nginx serves on 80 inside)
     restart: always
 
+  db-sonarqube:
+    image: postgres:15
+    container_name: db-sonarqube
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar
+      POSTGRES_DB: sonarqube
+    volumes:
+      - sonarqube_pgdata:/var/lib/postgresql/data
+    networks:
+      - rs-net
+    restart: always
+
+  service-sonarqube:
+    image: sonarqube:community
+    container_name: service-sonarqube
+    depends_on:
+      - db-sonarqube
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://db-sonarqube:5432/sonarqube
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+    ports:
+      - "${SONARQUBE_PORT}:9000"          # access UI at http://localhost:9000
+    networks:                             # user: sonar - pwd: Sonar100%sonar
+      - rs-net
+    restart: always
+
+  service-jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: service-jenkins
+    user: root
+    ports:
+      - "${JENKINS_PORT}:8080"          # Jenkins UI at http://localhost:9090
+      - "50000:50000"                   # JNLP agents (optional)
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock  # allow Jenkins to run docker/compose
+    networks:
+      - rs-net
+    restart: always
+
 volumes:
-  mysql-vol:
+  mysql_data:
+  sonarqube_pgdata:
+  jenkins_home:
 
 networks:
   rs-net:
