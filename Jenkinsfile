@@ -21,7 +21,7 @@ pipeline {
 
     stage('Build & Unit Tests') {
       steps {
-        sh 'mvn -B -f ./be/ingestionVideo/pom.xml clean verify'
+        sh 'mvn -B -f be/IngestionVideo/pom.xml clean verify'
       }
     }
 
@@ -29,7 +29,7 @@ pipeline {
       steps {
         withSonarQubeEnv(SONARQUBE_ENV) {
           sh '''
-            mvn -B -f ./be/ingestionVideo/ sonar:sonar \
+            mvn -B -f be/IngestionVideo/ sonar:sonar \
               -Dsonar.projectKey=ingestion-platform \
               -Dsonar.projectName="Ingestion Platform" \
               -Dsonar.host.url=$SONAR_HOST_URL \
@@ -54,8 +54,8 @@ pipeline {
     stage('Docker Compose Up') {
       steps {
         sh '''
-          docker compose -f ./be/docker-compose.yaml pull
-          docker compose -f ./be/docker-compose.yaml up -d --build
+          docker compose -f be/docker-compose.yaml pull
+          docker compose -f be/docker-compose.yaml up -d --build
         '''
       }
     }
