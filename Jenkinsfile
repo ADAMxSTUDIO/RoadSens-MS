@@ -6,6 +6,11 @@ pipeline {
     SONARQUBE_ENV = 'SonarQube'
     // Optional: Maven tool name configured in Jenkins (Manage Jenkins -> Global Tool Configuration)
     MAVEN_TOOL    = 'Maven3'
+    DB_HOST = 'localhost'
+    DB_PORT = '3306'
+    DB_NAME = 'rs-ingestion'
+    DB_USER = 'root'
+    DB_PWD  = 'root'
   }
 
   tools {
