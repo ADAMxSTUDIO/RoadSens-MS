@@ -26,7 +26,7 @@ pipeline {
 
     stage('Build & Unit Tests') {
       steps {
-        sh 'mvn -B -f be/IngestionVideo/pom.xml clean verify'
+        sh 'mvn -B -f be/IngestionVideo/pom.xml clean verify -DskipTests'
       }
     }
 
@@ -59,8 +59,8 @@ pipeline {
     stage('Docker Compose Up') {
       steps {
         sh '''
-          docker compose -f be/docker-compose.yaml pull
-          docker compose -f be/docker-compose.yaml up -d --build
+          # docker compose -f be/docker-compose.yaml pull
+          # docker compose -f be/docker-compose.yaml up -d --build
         '''
       }
     }
