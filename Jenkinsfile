@@ -6,7 +6,7 @@ pipeline {
     SONARQUBE_ENV = 'SonarQube'
     // Optional: Maven tool name configured in Jenkins (Manage Jenkins -> Global Tool Configuration)
     MAVEN_TOOL    = 'Maven3'
-    DB_HOST = 'localhost'
+    DB_HOST = 'db-ingestion'
     DB_PORT = '3306'
     DB_NAME = 'rs-ingestion'
     DB_USER = 'root'
@@ -26,7 +26,7 @@ pipeline {
 
     stage('Build & Unit Tests') {
       steps {
-        sh 'mvn -B -f be/IngestionVideo/pom.xml clean verify -DskipTests'
+        sh 'mvn -B -f be/IngestionVideo/pom.xml clean verify'
       }
     }
 
